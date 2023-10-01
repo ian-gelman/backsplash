@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_socketio import SocketIO, emit
 from flask_cors import CORS
 from datetime import datetime
@@ -23,7 +23,6 @@ def test_connect():
 
 @socketio.on("update_pixel")
 def update_pixel(message):
-    print(message)
     pixel = {
         'chunk': message['chunk'],
         'x': message['x'],
@@ -31,11 +30,12 @@ def update_pixel(message):
         'color': message['color'],
         #TODO: Figure out how to get IP
         'metadata': {
-            'created_by': 'someone',
-            'created_at': datetime.now()
+            'created_by': request.remote_addr,
+            'created_at': str(datetime.now())
         }
     }
     pixels.append(pixel)
+    print(pixel)
 
 #Instantiate socketio app
 if __name__ == "__main__":
