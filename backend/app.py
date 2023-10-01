@@ -11,15 +11,14 @@ socketio = SocketIO(app, cors_allowed_origins='*')
 pixels = []
 
 # Handler for default flask route
-# Using jinja template to render html along with slider value as input
-@app.route("/")
-def index():
-    return render_template("index.html", **values)
+#@app.route("/")
+#def index():
+#    return render_template("../frontend/src/index.js")
 
 # Handler for a message recieved over 'connect' channel
 @socketio.on("connect")
 def test_connect():
-    emit("after connect", {"data": "Lets dance"})
+    emit("after connect", {"data": "unga bunga"})
 
 @socketio.on("update_pixel")
 def update_pixel(message):
@@ -28,9 +27,8 @@ def update_pixel(message):
         'x': message['x'],
         'y': message['y'],
         'color': message['color'],
-        #TODO: Figure out how to get IP
         'metadata': {
-            'created_by': request.remote_addr,
+            'created_by': request.remote_addr, #untested
             'created_at': str(datetime.now())
         }
     }
